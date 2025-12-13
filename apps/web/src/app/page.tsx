@@ -1,4 +1,4 @@
-import { DevoverUi } from '@common/ui/ui';
+import { Button } from '@common/ui/components/button';
 export default function Index() {
-  return <DevoverUi />;
+  return <Button>Hello</Button>;
 }
