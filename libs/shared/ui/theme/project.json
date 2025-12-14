@@ -1,0 +1,19 @@
+{
+  "name": "theme",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/ui/theme/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/ui/theme",
+        "main": "libs/shared/ui/theme/src/index.ts",
+        "tsConfig": "libs/shared/ui/theme/tsconfig.lib.json",
+        "assets": []
+      }
+    }
+  }
+}

@@ -20,8 +20,12 @@
     "customConditions": ["@devover/source"],
     "baseUrl": ".",
     "paths": {
-      "@common/ui/*": ["libs/ui/src/lib/*"],
-      "@common/utils/*": ["libs/utils/src/lib/*"]
+      "@common/ui/components/*": ["libs/shared/ui/components/src/lib/*"],
+      "@common/ui/layouts/*": ["libs/shared/ui/layouts/src/lib/*"],
+      "@common/ui/theme/*": ["libs/shared/ui/theme/src/lib/*"],
+      "@common/utils/*": ["libs/shared/utils/src/lib/*"],
+      "@common/types/*": ["libs/shared/types/src/lib/*"],
+      "@common/constants/*": ["libs/shared/constants/src/lib/*"]
     }
   }
 }
