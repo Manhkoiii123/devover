@@ -20,7 +20,8 @@
     "customConditions": ["@devover/source"],
     "baseUrl": ".",
     "paths": {
-      "@common/ui/*": ["libs/ui/src/lib/*"]
+      "@common/ui/*": ["libs/ui/src/lib/*"],
+      "@common/utils/*": ["libs/utils/src/lib/*"]
     }
   }
 }
