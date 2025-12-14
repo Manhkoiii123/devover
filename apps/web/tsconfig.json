@@ -23,7 +23,10 @@
       "@common/ui/layouts/*": ["../../libs/shared/ui/layouts/src/lib/*"],
       "@common/utils/*": ["../../libs/shared/utils/src/lib/*"],
       "@common/types/*": ["../../libs/shared/types/src/lib/*"],
-      "@common/constants/*": ["../../libs/shared/constants/src/lib/*"]
+      "@common/constants/*": ["../../libs/shared/constants/src/lib/*"],
+      "@common/providers/*": [
+        "../../libs/shared/data-access/providers/src/lib/*"
+      ]
     },
     "types": ["jest", "node"],
     "outDir": "dist",

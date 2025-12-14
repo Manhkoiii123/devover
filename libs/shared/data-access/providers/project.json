@@ -1,0 +1,19 @@
+{
+  "name": "providers",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/data-access/providers/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/data-access/providers",
+        "main": "libs/shared/data-access/providers/src/index.ts",
+        "tsConfig": "libs/shared/data-access/providers/tsconfig.lib.json",
+        "assets": []
+      }
+    }
+  }
+}

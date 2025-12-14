@@ -26,10 +26,11 @@
       "@common/utils/*": ["libs/shared/utils/src/lib/*"],
       "@common/types/*": ["libs/shared/types/src/lib/*"],
       "@common/constants/*": ["libs/shared/constants/src/lib/*"],
-      "@common/api": ["libs/shared/data-access/api/src/lib/*"],
-      "@common/store": ["libs/shared/data-access/store/src/lib/*"],
-      "@devover/hooks": ["libs/shared/data-access/hooks/src/index.ts"],
-      "@devover/auth": ["libs/features/auth/src/index.ts"]
+      "@common/api/*": ["libs/shared/data-access/api/src/lib/*"],
+      "@common/store/*": ["libs/shared/data-access/store/src/lib/*"],
+      "@common/hooks/*": ["libs/shared/data-access/hooks/src/lib/*"],
+      "@common/auth/*": ["libs/features/auth/src/lib/*"],
+      "@common/providers/*": ["libs/shared/data-access/providers/src/lib/*"]
     }
   }
 }
