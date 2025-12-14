@@ -1,0 +1,20 @@
+{
+  "name": "@devover/components",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "@devover/source": "./src/lib/*.tsx",
+      "types": "./src/lib/*.d.ts",
+      "import": "./src/lib/*.js",
+      "default": "./src/lib/*.js"
+    }
+  },
+  "dependencies": {
+    "@swc/helpers": "~0.5.11"
+  }
+}
