@@ -28,7 +28,8 @@
       "@common/constants/*": ["libs/shared/constants/src/lib/*"],
       "@common/api": ["libs/shared/data-access/api/src/lib/*"],
       "@common/store": ["libs/shared/data-access/store/src/lib/*"],
-      "@devover/hooks": ["libs/shared/data-access/hooks/src/index.ts"]
+      "@devover/hooks": ["libs/shared/data-access/hooks/src/index.ts"],
+      "@devover/auth": ["libs/features/auth/src/index.ts"]
     }
   }
 }
