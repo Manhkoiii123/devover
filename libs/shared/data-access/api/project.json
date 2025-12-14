@@ -1,0 +1,19 @@
+{
+  "name": "api",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/data-access/api/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/data-access/api",
+        "main": "libs/shared/data-access/api/src/index.ts",
+        "tsConfig": "libs/shared/data-access/api/tsconfig.lib.json",
+        "assets": []
+      }
+    }
+  }
+}
