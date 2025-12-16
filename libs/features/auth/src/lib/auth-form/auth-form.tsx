@@ -19,14 +19,29 @@ import { Input } from '@common/ui/components/input';
 import SiteLogo from '@common/assets/images/site-logo.svg';
 import { ROUTES } from '@common/constants/routes';
 import {
+  ForgotPasswordSchema,
+  SetNewPasswordSchema,
   SignInSchema,
   SignUpSchema,
 } from '@common/validations/auth.validation';
+import SocialAuthForm from '@common/auth/auth-form/social-auth-form';
 
 type SignInValues = z.infer<typeof SignInSchema>;
 type SignUpValues = z.infer<typeof SignUpSchema>;
+type ForgotPasswordValues = z.infer<typeof ForgotPasswordSchema>;
+type SetNewPasswordValues = z.infer<typeof SetNewPasswordSchema>;
 
-type AuthFieldName = keyof SignInValues | keyof SignUpValues;
+type AuthFormValues =
+  | SignInValues
+  | SignUpValues
+  | ForgotPasswordValues
+  | SetNewPasswordValues;
+
+type AuthFieldName =
+  | keyof SignInValues
+  | keyof SignUpValues
+  | keyof ForgotPasswordValues
+  | keyof SetNewPasswordValues;
 
 type AuthFormProps =
   | {
@@ -40,11 +55,24 @@ type AuthFormProps =
       schema: typeof SignUpSchema;
       defaultValues: SignUpValues;
       onSubmit: (values: SignUpValues) => Promise<void> | void;
+    }
+  | {
+      formType: 'FORGOT_PASSWORD';
+      schema: typeof ForgotPasswordSchema;
+      defaultValues: ForgotPasswordValues;
+      onSubmit: (values: ForgotPasswordValues) => Promise<void> | void;
+    }
+  | {
+      formType: 'SET_NEW_PASSWORD';
+      schema: typeof SetNewPasswordSchema;
+      defaultValues: SetNewPasswordValues;
+      onSubmit: (values: SetNewPasswordValues) => Promise<void> | void;
     };
 
 const FORM_CONFIG = {
   SIGN_IN: {
     title: 'Sign In',
+    subTitle: 'to continue to DevFlow',
     buttonText: 'Sign In',
     loadingText: 'Signing In...',
     linkText: "Don't have an account?",
@@ -53,10 +81,29 @@ const FORM_CONFIG = {
   },
   SIGN_UP: {
     title: 'Create your account',
+    subTitle: 'to continue to DevFlow',
     buttonText: 'Sign Up',
     loadingText: 'Signing Up...',
     linkText: 'Already have an account?',
     linkLabel: 'Sign in',
+    linkHref: ROUTES.SIGN_IN,
+  },
+  FORGOT_PASSWORD: {
+    title: 'Forgot Password',
+    subTitle: 'No worries, we’ll send you reset instructions.',
+    buttonText: 'Continue',
+    loadingText: 'Sending Reset Link...',
+    linkText: 'Back to ',
+    linkLabel: 'login',
+    linkHref: ROUTES.SIGN_IN,
+  },
+  SET_NEW_PASSWORD: {
+    title: 'Set new password',
+    subTitle: 'New password must be different.',
+    buttonText: 'Reset password',
+    loadingText: 'Resetting Password...',
+    linkText: 'Back to ',
+    linkLabel: 'login',
     linkHref: ROUTES.SIGN_IN,
   },
 } as const;
@@ -71,9 +118,9 @@ const AuthForm = (props: AuthFormProps) => {
   const { formType, schema, defaultValues, onSubmit } = props;
   const config = FORM_CONFIG[formType];
 
-  const form = useForm({
+  const form = useForm<AuthFormValues>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: defaultValues as AuthFormValues,
   });
 
   const getFieldLabel = (fieldName: string) => {
@@ -83,11 +130,19 @@ const AuthForm = (props: AuthFormProps) => {
     );
   };
 
-  const handleSubmit = (values: SignInValues | SignUpValues) => {
+  const handleSubmit = (values: AuthFormValues) => {
     if (formType === 'SIGN_IN') {
       (onSubmit as (values: SignInValues) => void)(values as SignInValues);
-    } else {
+    } else if (formType === 'SIGN_UP') {
       (onSubmit as (values: SignUpValues) => void)(values as SignUpValues);
+    } else if (formType === 'FORGOT_PASSWORD') {
+      (onSubmit as (values: ForgotPasswordValues) => void)(
+        values as ForgotPasswordValues
+      );
+    } else {
+      (onSubmit as (values: SetNewPasswordValues) => void)(
+        values as SetNewPasswordValues
+      );
     }
   };
 
@@ -97,7 +152,7 @@ const AuthForm = (props: AuthFormProps) => {
         <div className="space-y-2.5">
           <h1 className="h2-bold text-dark100_light900">{config.title}</h1>
           <p className="paragraph-regular text-dark500_light400">
-            to continue to DevFlow
+            {config.subTitle}
           </p>
         </div>
         <Image
@@ -162,6 +217,9 @@ const AuthForm = (props: AuthFormProps) => {
               {config.linkLabel}
             </Link>
           </p>
+          {(formType === 'SIGN_IN' || formType === 'SIGN_UP') && (
+            <SocialAuthForm />
+          )}
         </form>
       </Form>
     </>
