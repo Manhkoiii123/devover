@@ -31,7 +31,8 @@
       "@common/store/*": ["libs/shared/data-access/store/src/lib/*"],
       "@common/hooks/*": ["libs/shared/data-access/hooks/src/lib/*"],
       "@common/auth/*": ["libs/features/auth/src/lib/*"],
-      "@common/providers/*": ["libs/shared/data-access/providers/src/lib/*"]
+      "@common/providers/*": ["libs/shared/data-access/providers/src/lib/*"],
+      "@features/auth/*": ["libs/features/auth/src/lib/*"]
     }
   }
 }
