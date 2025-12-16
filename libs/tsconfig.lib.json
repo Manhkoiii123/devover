@@ -9,6 +9,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
+    "types": ["node", "@nx/react/typings/image.d.ts"],
     "baseUrl": ".",
     "paths": {
       "@common/ui/components/*": ["shared/ui/components/src/lib/*"],

@@ -13,28 +13,29 @@ import {
   FormMessage,
 } from '@common/ui/components/form';
 import { Input } from '@common/ui/components/input';
-import { SignInSchema } from '@common/validations/auth.validation';
+import { SignUpSchema } from '@common/validations/auth.validation';
 import Image from 'next/image';
 import SiteLogo from '@common/assets/images/site-logo.svg';
 import { ROUTES } from '@common/constants/routes';
 import Link from 'next/link';
 
-const SignInForm = () => {
-  const form = useForm<z.infer<typeof SignInSchema>>({
-    resolver: zodResolver(SignInSchema),
+const SignUpForm = () => {
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
+      username: '',
       email: '',
       password: '',
     },
   });
-  function onSubmit(values: z.infer<typeof SignInSchema>) {
+  function onSubmit(values: z.infer<typeof SignUpSchema>) {
     console.log(values);
   }
   return (
     <>
       <div className="flex items-center justify-between gap-2">
         <div className="space-y-2.5">
-          <h1 className="h2-bold text-dark100_light900">Sign In</h1>
+          <h1 className="h2-bold text-dark100_light900">Create your account</h1>
           <p className="paragraph-regular text-dark500_light400">
             to continue to DevFlow
           </p>
@@ -59,7 +60,7 @@ const SignInForm = () => {
             <FormField
               key={field}
               control={form.control}
-              name={field as keyof z.infer<typeof SignInSchema>}
+              name={field as keyof z.infer<typeof SignUpSchema>}
               render={({ field }) => (
                 <FormItem className="flex w-full flex-col gap-2.5">
                   <FormLabel className="paragraph-medium text-dark400_light700">
@@ -85,16 +86,17 @@ const SignInForm = () => {
             disabled={form.formState.isSubmitting}
             className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
           >
-            {form.formState.isSubmitting ? 'Signin In...' : 'Continue'}
+            {form.formState.isSubmitting ? 'Signing up...' : 'Continue'}
           </Button>
+
           <div className="flex items-center justify-center">
             <p>
-              Don't have an account?{' '}
+              Already have an account?{' '}
               <Link
-                href={ROUTES.SIGN_UP}
+                href={ROUTES.SIGN_IN}
                 className="paragraph-semibold primary-text-gradient"
               >
-                Sign up
+                Sign in
               </Link>
             </p>
           </div>
@@ -104,4 +106,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
