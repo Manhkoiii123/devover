@@ -26,7 +26,6 @@ import {
 type SignInValues = z.infer<typeof SignInSchema>;
 type SignUpValues = z.infer<typeof SignUpSchema>;
 
-// Derive field names from schema types
 type AuthFieldName = keyof SignInValues | keyof SignUpValues;
 
 type AuthFormProps =
@@ -76,12 +75,6 @@ const AuthForm = (props: AuthFormProps) => {
     resolver: zodResolver(schema),
     defaultValues,
   });
-
-  const getInputType = (fieldName: string) => {
-    if (fieldName === 'password') return 'password';
-    if (fieldName === 'email') return 'email';
-    return 'text';
-  };
 
   const getFieldLabel = (fieldName: string) => {
     return (
