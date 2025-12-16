@@ -1,0 +1,19 @@
+{
+  "name": "validations",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/validations/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/validations",
+        "main": "libs/shared/validations/src/index.ts",
+        "tsConfig": "libs/shared/validations/tsconfig.lib.json",
+        "assets": []
+      }
+    }
+  }
+}

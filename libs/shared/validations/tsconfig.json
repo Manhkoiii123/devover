@@ -1,15 +1,13 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "esnext",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "importHelpers": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "jsx": "react-jsx",
-    "lib": ["es2022", "dom", "dom.iterable"]
+    "noPropertyAccessFromIndexSignature": true
   },
   "files": [],
   "include": [],

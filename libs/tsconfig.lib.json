@@ -1,0 +1,30 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "importHelpers": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@common/ui/components/*": ["shared/ui/components/src/lib/*"],
+      "@common/ui/layouts/*": ["shared/ui/layouts/src/lib/*"],
+      "@common/ui/theme/*": ["shared/ui/theme/src/lib/*"],
+      "@common/utils/*": ["shared/utils/src/lib/*"],
+      "@common/types/*": ["shared/types/src/lib/*"],
+      "@common/constants/*": ["shared/constants/src/lib/*"],
+      "@common/api/*": ["shared/data-access/api/src/lib/*"],
+      "@common/store/*": ["shared/data-access/store/src/lib/*"],
+      "@common/hooks/*": ["shared/data-access/hooks/src/lib/*"],
+      "@common/providers/*": ["shared/data-access/providers/src/lib/*"],
+      "@common/auth/*": ["features/auth/src/lib/*"],
+      "@features/auth/*": ["features/auth/src/lib/*"],
+      "@common/validations/*": ["shared/validations/src/lib/*"],
+      "@common/assets/*": ["shared/assets/src/lib/*"]
+    }
+  }
+}
