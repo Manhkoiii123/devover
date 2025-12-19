@@ -36,7 +36,7 @@ const VerifyOTPForm = () => {
   };
 
   const handleResend = () => {
-    resendOTP({ email });
+    resendOTP({ email, type: TYPE_VERIFYCATION_CODE.EMAIL_CONFIRMATION });
   };
 
   return (

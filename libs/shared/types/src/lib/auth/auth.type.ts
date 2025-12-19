@@ -34,6 +34,7 @@ export interface VerifyOTPRequest {
 
 export interface ResendOTPRequest {
   email: string;
+  type: TYPE_VERIFYCATION_CODE;
 }
 
 export interface BaseEntity {

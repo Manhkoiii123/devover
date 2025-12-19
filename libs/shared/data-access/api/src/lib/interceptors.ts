@@ -4,6 +4,7 @@ import type {
   InternalAxiosRequestConfig,
 } from 'axios';
 import Cookies from 'js-cookie';
+import { ROUTES } from '@common/constants/routes';
 
 const isClient = typeof document !== 'undefined';
 
@@ -51,7 +52,7 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
 
       if (error.response?.status === 401 && originalRequest) {
         removeCookie('accessToken');
-        redirectTo('/login');
+        redirectTo(ROUTES.SIGN_IN);
       }
 
       return Promise.reject(error);
