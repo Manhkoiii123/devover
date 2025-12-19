@@ -45,8 +45,8 @@
   --font-inter: 'Inter', sans-serif;
 
   /* https://github.com/tailwindlabs/tailwindcss/discussions/13756 */
-  --background-image-auth-dark: url('/images/auth-dark.png');
-  --background-image-auth-light: url('/images/auth-light.png');
+  --background-image-auth-dark: url('/libs/shared/ui/layouts/src/images/auth-dark.png');
+  --background-image-auth-light: url('/libs/shared/ui/layouts/src/images/auth-light.png');
 }
 
 :root {

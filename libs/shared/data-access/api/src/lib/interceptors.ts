@@ -1,5 +1,10 @@
-import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosError,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import Cookies from 'js-cookie';
+import { ROUTES } from '@common/constants/routes';
 
 const isClient = typeof document !== 'undefined';
 
@@ -36,13 +41,18 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
   );
 
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if (response.data && 'data' in response.data) {
+        response.data = response.data.data;
+      }
+      return response;
+    },
     async (error: AxiosError) => {
       const originalRequest = error.config;
 
       if (error.response?.status === 401 && originalRequest) {
         removeCookie('accessToken');
-        redirectTo('/login');
+        redirectTo(ROUTES.SIGN_IN);
       }
 
       return Promise.reject(error);
