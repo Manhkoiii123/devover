@@ -1,36 +1,92 @@
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import {
+  LoginRequest,
+  LoginData,
+  RegisterRequest,
+  RefreshTokenData,
+  VerifyOTPRequest,
+  VerifyOTPData,
+  ResendOTPRequest,
+  ResendOTPData,
+  RegisterData,
+} from '@common/types/auth/auth.type';
 import { apiClient } from '../client';
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-  };
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  name: string;
-}
 
 export const authApi = {
   login: (data: LoginRequest) =>
-    apiClient.post<LoginResponse>('/auth/login', data),
+    apiClient.post<LoginData>('/auth/login', data).then((res) => res.data),
 
   register: (data: RegisterRequest) =>
-    apiClient.post<LoginResponse>('/auth/register', data),
+    apiClient
+      .post<RegisterData>('/auth/register', data)
+      .then((res) => res.data),
 
-  logout: () =>
-    apiClient.post('/auth/logout'),
+  logout: () => apiClient.post('/auth/logout').then((res) => res.data),
 
   refreshToken: (refreshToken: string) =>
-    apiClient.post<{ accessToken: string }>('/auth/refresh', { refreshToken }),
+    apiClient
+      .post<RefreshTokenData>('/auth/refresh', { refreshToken })
+      .then((res) => res.data),
+
+  verifyOTP: (data: VerifyOTPRequest) =>
+    apiClient
+      .post<VerifyOTPData>('/auth/validate-otp', data)
+      .then((res) => res.data),
+
+  resendOTP: (data: ResendOTPRequest) =>
+    apiClient
+      .post<ResendOTPData>('/auth/re-send-otp', data)
+      .then((res) => res.data),
+};
+
+export const useLogin = (
+  options?: UseMutationOptions<LoginData, Error, LoginRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.login,
+    ...options,
+  });
+};
+
+export const useRegister = (
+  options?: UseMutationOptions<RegisterData, Error, RegisterRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.register,
+    ...options,
+  });
+};
+
+export const useLogout = (options?: UseMutationOptions<void, Error, void>) => {
+  return useMutation({
+    mutationFn: authApi.logout,
+    ...options,
+  });
+};
+
+export const useRefreshToken = (
+  options?: UseMutationOptions<RefreshTokenData, Error, string>
+) => {
+  return useMutation({
+    mutationFn: authApi.refreshToken,
+    ...options,
+  });
+};
+
+export const useVerifyOTP = (
+  options?: UseMutationOptions<VerifyOTPData, Error, VerifyOTPRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.verifyOTP,
+    ...options,
+  });
+};
+
+export const useResendOTP = (
+  options?: UseMutationOptions<ResendOTPData, Error, ResendOTPRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.resendOTP,
+    ...options,
+  });
 };

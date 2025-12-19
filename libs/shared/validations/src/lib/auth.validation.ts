@@ -73,6 +73,13 @@ export const ForgotPasswordSchema = z.object({
     .email({ message: 'Please provide a valid email address.' }),
 });
 
+export const VerifyOTPSchema = z.object({
+  otp: z
+    .string()
+    .min(6, { message: 'OTP must be 6 characters.' })
+    .max(6, { message: 'OTP must be 6 characters.' }),
+});
+
 export const SetNewPasswordSchema = z
   .object({
     password: z

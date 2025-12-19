@@ -1,4 +1,8 @@
-import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import type {
+  AxiosInstance,
+  AxiosError,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import Cookies from 'js-cookie';
 
 const isClient = typeof document !== 'undefined';
@@ -36,7 +40,12 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
   );
 
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if (response.data && 'data' in response.data) {
+        response.data = response.data.data;
+      }
+      return response;
+    },
     async (error: AxiosError) => {
       const originalRequest = error.config;
 

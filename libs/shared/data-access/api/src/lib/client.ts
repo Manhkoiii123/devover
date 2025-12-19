@@ -2,7 +2,7 @@ import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { setupInterceptors } from './interceptors';
 
 const baseConfig: AxiosRequestConfig = {
-  baseURL: process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:3000/api',
+  baseURL: process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:3300/api/v1',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
