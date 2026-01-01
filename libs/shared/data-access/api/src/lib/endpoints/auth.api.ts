@@ -1,4 +1,8 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  UseMutationOptions,
+} from '@tanstack/react-query';
 import {
   LoginRequest,
   LoginData,
@@ -9,6 +13,8 @@ import {
   ResendOTPRequest,
   ResendOTPData,
   RegisterData,
+  GoogleCallbackRequest,
+  GoogleCallbackData,
 } from '@common/types/auth/auth.type';
 import { apiClient } from '../client';
 
@@ -36,6 +42,16 @@ export const authApi = {
   resendOTP: (data: ResendOTPRequest) =>
     apiClient
       .post<ResendOTPData>('/auth/re-send-otp', data)
+      .then((res) => res.data),
+
+  getGoogleAuthUrl: () =>
+    apiClient
+      .get<string>('/auth/google/authorization-url')
+      .then((res) => res.data),
+
+  googleCallback: (data: GoogleCallbackRequest) =>
+    apiClient
+      .get<GoogleCallbackData>('/auth/google/callback', { params: data })
       .then((res) => res.data),
 };
 
@@ -87,6 +103,21 @@ export const useResendOTP = (
 ) => {
   return useMutation({
     mutationFn: authApi.resendOTP,
+    ...options,
+  });
+};
+
+export const useGoogleAuthUrl = () => {
+  return useMutation({
+    mutationFn: authApi.getGoogleAuthUrl,
+  });
+};
+
+export const useGoogleCallback = (
+  options?: UseMutationOptions<GoogleCallbackData, Error, GoogleCallbackRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.googleCallback,
     ...options,
   });
 };

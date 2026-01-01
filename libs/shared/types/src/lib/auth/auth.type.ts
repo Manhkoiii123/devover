@@ -73,9 +73,16 @@ export interface ResendOTPData {
   message: string;
 }
 
-// Response types (kế thừa từ ApiResponse)
+export interface GoogleCallbackRequest {
+  code: string;
+  state: string;
+}
+
+export interface GoogleCallbackData extends AuthTokens {}
+
 export type LoginResponse = ApiResponse<LoginData>;
 export type RegisterResponse = ApiResponse<RegisterData>;
 export type RefreshTokenResponse = ApiResponse<RefreshTokenData>;
 export type VerifyOTPResponse = ApiResponse<VerifyOTPData>;
 export type ResendOTPResponse = ApiResponse<ResendOTPData>;
+export type GoogleCallbackResponse = ApiResponse<GoogleCallbackData>;
