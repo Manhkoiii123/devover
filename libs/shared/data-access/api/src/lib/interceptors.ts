@@ -45,7 +45,6 @@ const clearAuthAndRedirect = (): void => {
   redirectTo(ROUTES.SIGN_IN);
 };
 
-// Promise để đảm bảo chỉ gọi refresh token 1 lần tại 1 thời điểm
 let refreshTokenPromise: Promise<string> | null = null;
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -105,6 +104,7 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
 
               setCookie('accessToken', newAccessToken, {
                 expires: 7,
+                path: '/',
                 secure: process.env['NODE_ENV'] === 'production',
                 sameSite: 'strict',
               });

@@ -13,7 +13,6 @@ const GoogleCallbackPage = () => {
     if (hasProcessedRef.current) return;
     hasProcessedRef.current = true;
 
-    // Get tokens from URL query params
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get('accessToken');
     const refreshToken = params.get('refreshToken');
@@ -28,12 +27,14 @@ const GoogleCallbackPage = () => {
     if (accessToken && refreshToken) {
       Cookies.set('accessToken', accessToken, {
         expires: 7,
+        path: '/',
         secure: process.env['NODE_ENV'] === 'production',
         sameSite: 'strict',
       });
 
       Cookies.set('refreshToken', refreshToken, {
         expires: 30,
+        path: '/',
         secure: process.env['NODE_ENV'] === 'production',
         sameSite: 'strict',
       });

@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  UseMutationOptions,
-} from '@tanstack/react-query';
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import {
   LoginRequest,
   LoginData,

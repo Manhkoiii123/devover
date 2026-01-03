@@ -15,12 +15,14 @@ const SignInForm = () => {
     onSuccess: (data) => {
       Cookies.set('accessToken', data.accessToken, {
         expires: 7,
+        path: '/',
         secure: process.env['NODE_ENV'] === 'production',
         sameSite: 'strict',
       });
 
       Cookies.set('refreshToken', data.refreshToken, {
         expires: 30,
+        path: '/',
         secure: process.env['NODE_ENV'] === 'production',
         sameSite: 'strict',
       });
