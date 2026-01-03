@@ -15,6 +15,7 @@ import {
   RegisterData,
   GoogleCallbackRequest,
   GoogleCallbackData,
+  ResetPasswordRequest,
 } from '@common/types/auth/auth.type';
 import { apiClient } from '../client';
 
@@ -33,6 +34,9 @@ export const authApi = {
     apiClient
       .post<RefreshTokenData>('/auth/refresh', { refreshToken })
       .then((res) => res.data),
+
+  sendLinkResetPassword: (email: string) =>
+    apiClient.post('/auth/send-link-reset-password', { email }),
 
   verifyOTP: (data: VerifyOTPRequest) =>
     apiClient
@@ -53,6 +57,10 @@ export const authApi = {
     apiClient
       .get<GoogleCallbackData>('/auth/google/callback', { params: data })
       .then((res) => res.data),
+  resetPassword: (data: ResetPasswordRequest) =>
+    apiClient.post('/auth/reset-password', data),
+  reSendLinkResetPassword: (email: string) =>
+    apiClient.post('/auth/re-send-link-forgot-password', { email }),
 };
 
 export const useLogin = (
@@ -119,5 +127,23 @@ export const useGoogleCallback = (
   return useMutation({
     mutationFn: authApi.googleCallback,
     ...options,
+  });
+};
+
+export const useSendLinkResetPassword = () => {
+  return useMutation({
+    mutationFn: authApi.sendLinkResetPassword,
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationFn: authApi.resetPassword,
+  });
+};
+
+export const useReSendLinkResetPassword = () => {
+  return useMutation({
+    mutationFn: authApi.reSendLinkResetPassword,
   });
 };

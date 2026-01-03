@@ -59,6 +59,7 @@ type AuthFormProps =
       defaultValues: SignInValues;
       onSubmit: (values: SignInValues) => Promise<void> | void;
       isPending?: boolean;
+      code?: string;
     }
   | {
       formType: 'SIGN_UP';
@@ -66,6 +67,7 @@ type AuthFormProps =
       defaultValues: SignUpValues;
       onSubmit: (values: SignUpValues) => Promise<void> | void;
       isPending?: boolean;
+      code?: string;
     }
   | {
       formType: 'FORGOT_PASSWORD';
@@ -73,6 +75,7 @@ type AuthFormProps =
       defaultValues: ForgotPasswordValues;
       onSubmit: (values: ForgotPasswordValues) => Promise<void> | void;
       isPending?: boolean;
+      code?: string;
     }
   | {
       formType: 'SET_NEW_PASSWORD';
@@ -80,6 +83,7 @@ type AuthFormProps =
       defaultValues: SetNewPasswordValues;
       onSubmit: (values: SetNewPasswordValues) => Promise<void> | void;
       isPending?: boolean;
+      code?: string;
     }
   | {
       formType: 'VERIFY_OTP';
@@ -90,6 +94,7 @@ type AuthFormProps =
       email?: string;
       onResend?: () => Promise<void> | void;
       isResending?: boolean;
+      code?: string;
     };
 
 const FORM_CONFIG = {
@@ -179,6 +184,10 @@ const AuthForm = (props: AuthFormProps) => {
       (onSubmit as (values: VerifyOTPValues) => void)(
         values as VerifyOTPValues
       );
+    } else if (formType === 'SET_NEW_PASSWORD') {
+      (onSubmit as (values: SetNewPasswordValues) => void)(
+        values as SetNewPasswordValues
+      );
     } else {
       (onSubmit as (values: SetNewPasswordValues) => void)(
         values as SetNewPasswordValues
@@ -240,34 +249,42 @@ const AuthForm = (props: AuthFormProps) => {
               )}
             />
           ) : (
-            Object.keys(defaultValues).map((fieldName) => (
-              <FormField
-                key={fieldName}
-                control={form.control}
-                name={fieldName as AuthFieldName}
-                render={({ field }) => (
-                  <FormItem className="flex w-full flex-col gap-2.5">
-                    <FormLabel className="paragraph-medium text-dark400_light700">
-                      {getFieldLabel(fieldName)}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type={
-                          fieldName === 'password' ||
-                          fieldName === 'confirmPassword'
-                            ? 'password'
-                            : 'text'
-                        }
-                        required
-                        {...field}
-                        className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))
+            Object.keys(defaultValues)
+              .filter((fieldName) => fieldName !== 'otp')
+              .map((fieldName) => (
+                <FormField
+                  key={fieldName}
+                  control={form.control}
+                  name={fieldName as AuthFieldName}
+                  render={({ field }) => (
+                    <FormItem className="flex w-full flex-col gap-2.5">
+                      <FormLabel className="paragraph-medium text-dark400_light700">
+                        {getFieldLabel(fieldName)}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type={
+                            fieldName === 'password' ||
+                            fieldName === 'confirmPassword'
+                              ? 'password'
+                              : 'text'
+                          }
+                          required
+                          {...field}
+                          className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))
+          )}
+
+          {formType === 'SIGN_IN' && (
+            <Link href={ROUTES.FORGOT_PASSWORD}>
+              <p className="text-right text-primary mb-4">Forgot password</p>
+            </Link>
           )}
 
           <Button

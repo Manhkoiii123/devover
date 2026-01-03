@@ -3,6 +3,9 @@ export const ROUTES = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   VERIFY_OTP: '/verify-otp',
+  FORGOT_PASSWORD: '/forgot-password',
+  SET_NEW_PASSWORD: '/reset-password',
+  CHECK_EMAIL: '/check-email',
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

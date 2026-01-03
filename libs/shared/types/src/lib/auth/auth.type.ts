@@ -37,6 +37,13 @@ export interface ResendOTPRequest {
   type: TYPE_VERIFYCATION_CODE;
 }
 
+export interface ResetPasswordRequest {
+  email: string;
+  code: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface BaseEntity {
   id: number;
   createdAt: Date;

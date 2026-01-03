@@ -13,7 +13,6 @@ const SocialAuthForm = () => {
   const handleGoogleLogin = () => {
     getGoogleAuthUrl(undefined, {
       onSuccess: (data) => {
-        console.log('🚀 ~ handleGoogleLogin ~ data:', data);
         if (typeof window !== 'undefined') {
           window.location.href = data;
         }
