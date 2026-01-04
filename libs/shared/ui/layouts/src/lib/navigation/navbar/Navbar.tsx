@@ -1,11 +1,15 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import Theme from './Theme';
 import Logo from '@common/assets/images/site-logo.svg';
 import MobileNavigation from './MobileNavigation';
 import { ROUTES } from '@common/constants/routes';
+import { useAuth } from '@common/providers/auth-provider';
+import UserAvatar from '@common/ui/components/user-avatar';
 
-const Navbar = async () => {
+const Navbar = () => {
+  const { user } = useAuth();
   return (
     <nav className="flex-between background-light900_dark200 fixed z-50 w-full gap-5 p-6 shadow-light-300 dark:shadow-none sm:px-12">
       <Link href={ROUTES.HOME} className="flex items-center gap-1">
@@ -17,6 +21,14 @@ const Navbar = async () => {
 
       <div className="flex-between gap-5">
         <Theme />
+
+        {user && (
+          <UserAvatar
+            id={user.id.toString()}
+            name={user.username!}
+            imageUrl={user?.avatar}
+          />
+        )}
         <MobileNavigation />
       </div>
     </nav>

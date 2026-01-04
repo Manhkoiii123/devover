@@ -1,4 +1,9 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  UseMutationOptions,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import {
   LoginRequest,
   LoginData,
@@ -12,8 +17,13 @@ import {
   GoogleCallbackRequest,
   GoogleCallbackData,
   ResetPasswordRequest,
+  AuthUser,
 } from '@common/types/auth/auth.type';
 import { apiClient } from '../client';
+
+export const AUTH_QUERY_KEYS = {
+  currentUser: ['currentUser'] as const,
+};
 
 export const authApi = {
   login: (data: LoginRequest) =>
@@ -57,6 +67,8 @@ export const authApi = {
     apiClient.post('/auth/reset-password', data),
   reSendLinkResetPassword: (email: string) =>
     apiClient.post('/auth/re-send-link-forgot-password', { email }),
+
+  getMe: () => apiClient.get<AuthUser>('/auth/me').then((res) => res.data),
 };
 
 export const useLogin = (
@@ -141,5 +153,17 @@ export const useResetPassword = () => {
 export const useReSendLinkResetPassword = () => {
   return useMutation({
     mutationFn: authApi.reSendLinkResetPassword,
+  });
+};
+
+export const useCurrentUser = (
+  options?: Omit<UseQueryOptions<AuthUser, Error>, 'queryKey' | 'queryFn'>
+) => {
+  return useQuery({
+    queryKey: AUTH_QUERY_KEYS.currentUser,
+    queryFn: authApi.getMe,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+    ...options,
   });
 };

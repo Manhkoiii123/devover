@@ -15,7 +15,7 @@ import NavLinks from './NavLinks';
 import Hamburger from '@common/assets/icons/hamburger.svg';
 import Logo from '@common/assets/images/site-logo.svg';
 
-const MobileNavigation = async () => {
+const MobileNavigation = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>

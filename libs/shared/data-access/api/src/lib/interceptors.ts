@@ -3,13 +3,9 @@ import type {
   AxiosError,
   InternalAxiosRequestConfig,
 } from 'axios';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ROUTES } from '@common/constants/routes';
-import {
-  RefreshTokenData,
-  RefreshTokenResponse,
-} from '@common/types/auth/auth.type';
+import { RefreshTokenData } from '@common/types/auth/auth.type';
 import { apiClient } from '@common/api/client';
 
 const isClient = typeof document !== 'undefined';
@@ -39,10 +35,23 @@ const redirectTo = (path: string): void => {
   }
 };
 
+let isLoggingOut = false;
+
 const clearAuthAndRedirect = (): void => {
+  if (isLoggingOut) return;
+  isLoggingOut = true;
+
   removeCookie('accessToken');
   removeCookie('refreshToken');
-  redirectTo(ROUTES.SIGN_IN);
+
+  setTimeout(() => {
+    isLoggingOut = false;
+    redirectTo(ROUTES.SIGN_IN);
+  }, 100);
+};
+
+export const resetLogoutState = (): void => {
+  isLoggingOut = false;
 };
 
 let refreshTokenPromise: Promise<string> | null = null;
@@ -78,6 +87,10 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
       const originalRequest = error.config as CustomAxiosRequestConfig;
 
       if (!originalRequest || !isClient) {
+        return Promise.reject(error);
+      }
+
+      if (isLoggingOut) {
         return Promise.reject(error);
       }
 

@@ -52,10 +52,13 @@ export interface BaseEntity {
 }
 
 export interface AuthUser extends BaseEntity {
-  username: string;
   email: string;
+  username: string;
   phoneNumber: string;
   avatar?: string | null;
+  bio?: string | null;
+  location?: string | null;
+  reputation: number;
   status: USER_STATUS;
 }
 

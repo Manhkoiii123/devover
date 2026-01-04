@@ -1,6 +1,7 @@
 import './global.css';
 import { ReactQueryProvider } from '@common/providers/react-query-provider';
 import { ThemeProvider } from '@common/providers/theme-provider';
+import { AuthProvider } from '@common/providers/auth-provider';
 import { Toaster } from '@common/ui/components/sonner';
 
 export const metadata = {
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ReactQueryProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
