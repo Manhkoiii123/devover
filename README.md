@@ -104,3 +104,5 @@ And join the Nx community:
 # thêm 1 folder
 
 `npx nx generate @nx/js:library constants --directory=libs/shared/constants --bundler=swc --unitTestRunner=none --minimal --projectNameAndRootFormat=as-provided`
+
+nhớ thêm path trong `libs\tsconfig.lib.json` để import được từ page.tsx

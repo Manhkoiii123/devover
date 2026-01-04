@@ -33,6 +33,7 @@
       "@common/auth/*": ["libs/features/auth/src/lib/*"],
       "@common/providers/*": ["libs/shared/data-access/providers/src/lib/*"],
       "@features/auth/*": ["libs/features/auth/src/lib/*"],
+      "@features/questions/*": ["libs/features/questions/src/lib/*"],
       "@common/validations/*": ["libs/shared/validations/src/lib/*"],
       "@common/assets/*": ["libs/shared/assets/src/lib/*"]
     }
