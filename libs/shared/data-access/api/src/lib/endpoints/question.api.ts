@@ -4,7 +4,7 @@ import {
   QuestionListResponse,
   QuestionResponse,
 } from '@common/types/question/question.type';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 export const questionApi = {
@@ -14,13 +14,14 @@ export const questionApi = {
       .then((res) => res.data);
   },
   getQuestion: async (id: string) => {
-    return apiClient
-      .get<QuestionResponse>(`/questions/${id}`)
-      .then((res) => res.data);
+    return apiClient.get(`/questions/${id}`).then((res) => res.data);
   },
-  getQuestions: async () => {
+  getQuestions: async (
+    query?: string,
+    filter?: string
+  ): Promise<QuestionListResponse> => {
     return apiClient
-      .get<QuestionListResponse>('/questions')
+      .get('/questions', { params: { query, filter } })
       .then((res) => res.data);
   },
 };
@@ -45,13 +46,15 @@ export const useCreateQuestion = () => {
 };
 
 export const useGetQuestion = (id: string) => {
-  return useQueryClient().getQueryData<QuestionResponse>(
-    QUESTION_QUERY_KEYS.question(id)
-  );
+  return useQuery({
+    queryKey: QUESTION_QUERY_KEYS.question(id),
+    queryFn: () => questionApi.getQuestion(id),
+  });
 };
 
-export const useGetQuestions = () => {
-  return useQueryClient().getQueryData<QuestionListResponse>(
-    QUESTION_QUERY_KEYS.questions
-  );
+export const useGetQuestions = (query?: string, filter?: string) => {
+  return useQuery({
+    queryKey: QUESTION_QUERY_KEYS.questions,
+    queryFn: () => questionApi.getQuestions(query, filter),
+  });
 };

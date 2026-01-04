@@ -5,6 +5,7 @@ export type CreateQuestionBody = {
 };
 
 export type Tag = {
+  id: string;
   name: string;
 };
 

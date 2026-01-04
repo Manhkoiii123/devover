@@ -6,6 +6,10 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   SET_NEW_PASSWORD: '/reset-password',
   CHECK_EMAIL: '/check-email',
+  ASK_QUESTION: '/ask-question',
+  TAGS: '/tags',
+  COLLECTION: '/collection',
+  PROFILE: (id: string) => `/profile/${id}`,
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

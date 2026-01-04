@@ -20,6 +20,7 @@ import {
   AuthUser,
 } from '@common/types/auth/auth.type';
 import { apiClient } from '../client';
+import Cookies from 'js-cookie';
 
 export const AUTH_QUERY_KEYS = {
   currentUser: ['currentUser'] as const,
@@ -34,7 +35,8 @@ export const authApi = {
       .post<RegisterData>('/auth/register', data)
       .then((res) => res.data),
 
-  logout: () => apiClient.post('/auth/logout').then((res) => res.data),
+  logout: (data: { refreshToken: string }) =>
+    apiClient.post('/auth/logout', data).then((res) => res.data),
 
   refreshToken: (refreshToken: string) =>
     apiClient
@@ -91,7 +93,12 @@ export const useRegister = (
 
 export const useLogout = (options?: UseMutationOptions<void, Error, void>) => {
   return useMutation({
-    mutationFn: authApi.logout,
+    mutationFn: () =>
+      authApi.logout({ refreshToken: Cookies.get('refreshToken') || '' }),
+    onSuccess: () => {
+      Cookies.remove('refreshToken');
+      Cookies.remove('accessToken');
+    },
     ...options,
   });
 };
