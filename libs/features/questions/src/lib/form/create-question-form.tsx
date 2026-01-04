@@ -21,13 +21,15 @@ import { useRouter } from 'next/navigation';
 import { ROUTES } from '@common/constants/routes';
 import { AskQuestionSchema } from '@common/validations/question.validation';
 import Tag from '../tag';
+import { QuestionResponse } from '@common/types/question/question.type';
+import { useCreateQuestion } from '@common/api/endpoints/question.api';
 
 const Editor = dynamic(() => import('@common/ui/components/editor'), {
   ssr: false,
 });
 
 interface Params {
-  question?: any;
+  question?: QuestionResponse;
   isEdit?: boolean;
 }
 
@@ -41,9 +43,11 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
     defaultValues: {
       title: question?.title || '',
       content: question?.content || '',
-      tags: question?.tags.map((tag: any) => tag.name) || [],
+      tags: [],
     },
   });
+
+  const { mutate: createQuestion, isPending: isCreating } = useCreateQuestion();
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -85,7 +89,10 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
 
   const handleCreateQuestion = async (
     data: z.infer<typeof AskQuestionSchema>
-  ) => {};
+  ) => {
+    createQuestion(data);
+    router.push(ROUTES.HOME);
+  };
 
   return (
     <Form {...form}>
@@ -186,14 +193,13 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
             type="submit"
             className="primary-gradient w-fit !text-light-900"
           >
-            {/* {isPending ? (
+            {isCreating ? (
               <>
-                <ReloadIcon className="mr-2 size-4 animate-spin" />
                 <span>Submitting</span>
               </>
-            ) : ( */}
-            <> {isEdit ? 'Edit Quesiton' : 'Ask A Question'} </>
-            {/* )} */}
+            ) : (
+              <> {isEdit ? 'Edit Quesiton' : 'Ask A Question'} </>
+            )}
           </Button>
         </div>
       </form>
