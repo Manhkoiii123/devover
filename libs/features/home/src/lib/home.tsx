@@ -23,7 +23,6 @@ const HomePage = ({ query, filter, page, pageSize }: SearchParams) => {
     isSuccess,
     error,
   } = useGetQuestions(query, filter);
-  console.log('🚀 ~ HomePage ~ dataListQuestion:', dataListQuestion);
 
   // if (isLoading) return <div>Loading...</div>;
 

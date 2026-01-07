@@ -10,6 +10,7 @@ export const ROUTES = {
   TAGS: '/tags',
   COLLECTION: '/collection',
   PROFILE: (id: string) => `/profile/${id}`,
+  QUESTION: (id: string) => `/question/${id}`,
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

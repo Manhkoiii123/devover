@@ -5,7 +5,7 @@ export type CreateQuestionBody = {
 };
 
 export type Tag = {
-  id: string;
+  id?: string;
   name: string;
 };
 
@@ -24,6 +24,22 @@ export type Author = {
   updatedAt: string | null;
 };
 
+export type AnswerAuthor = {
+  id: number;
+  name: string;
+  avatar: string;
+  email: string;
+};
+
+export type Answer = {
+  id: string;
+  content: string;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  author: AnswerAuthor;
+};
+
 export type QuestionResponse = {
   id: string;
   title: string;
@@ -32,12 +48,13 @@ export type QuestionResponse = {
   downvotes: number;
   viewsCount: number;
   authorId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   tags: Tag[];
   author: Author;
-  answersCount: number;
-  bookmarksCount: number;
+  answers: Answer[];
+  answersCount?: number;
+  bookmarksCount?: number;
 };
 
 export type PaginationMeta = {

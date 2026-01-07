@@ -2,8 +2,8 @@ import { ROUTES } from '@common/constants/routes';
 import { getTimeStamp } from '@common/utils/date.utils';
 import Link from 'next/link';
 import React from 'react';
-import TagCard from './tag-card';
-import Metric from './metric';
+import TagCard from '@common/ui/components/tag-card';
+import Metric from '@common/ui/components/metric';
 import { QuestionResponse, Tag } from '@common/types/question/question.type';
 import Like from '@common/assets/icons/like.svg';
 import Message from '@common/assets/icons/message.svg';
@@ -33,7 +33,7 @@ const QuestionCard = ({
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimeStamp(new Date(createdAt))}
           </span>
-          <Link href={'/'}>
+          <Link href={ROUTES.QUESTION(id)}>
             <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
               {title}
             </h3>

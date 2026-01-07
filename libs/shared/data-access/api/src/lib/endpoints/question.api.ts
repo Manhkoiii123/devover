@@ -14,7 +14,9 @@ export const questionApi = {
       .then((res) => res.data);
   },
   getQuestion: async (id: string) => {
-    return apiClient.get(`/questions/${id}`).then((res) => res.data);
+    return apiClient
+      .get<QuestionResponse>(`/questions/${id}`)
+      .then((res) => res.data);
   },
   getQuestions: async (
     query?: string,
@@ -49,6 +51,7 @@ export const useGetQuestion = (id: string) => {
   return useQuery({
     queryKey: QUESTION_QUERY_KEYS.question(id),
     queryFn: () => questionApi.getQuestion(id),
+    enabled: !!id,
   });
 };
 
