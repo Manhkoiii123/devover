@@ -1,12 +1,19 @@
 import { apiClient } from '@common/api/client';
+import { QUESTION_QUERY_KEYS } from '@common/api/endpoints/question.api';
 import { AnswerListResponse } from '@common/types/answer/answer.type';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 export const answerApi = {
-  getAnswerByQuestionId: (data: { questionId: string }) =>
+  getAnswerByQuestionId: (data: { questionId: string; page: number }) =>
     apiClient
-      .get<AnswerListResponse>(`/questions/${data.questionId}/answers`)
+      .get<AnswerListResponse>(
+        `/questions/${data.questionId}/answers?page=${data.page}`
+      )
       .then((res) => res.data),
 
   createAnswer: (data: { questionId: string; content: string }) =>
@@ -18,9 +25,17 @@ export const ANSWER_QUERY_KEYS = {
 };
 
 export const useGetAnswerByQuestionId = (id: string) => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: [ANSWER_QUERY_KEYS.answers, id],
-    queryFn: () => answerApi.getAnswerByQuestionId({ questionId: id }),
+    queryFn: ({ pageParam = 1 }) =>
+      answerApi.getAnswerByQuestionId({ questionId: id, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.meta.page < lastPage.meta.totalPages) {
+        return lastPage.meta.page + 1;
+      }
+      return undefined;
+    },
     enabled: !!id,
   });
 };
@@ -32,6 +47,9 @@ export const useCreateAnswer = (id: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [ANSWER_QUERY_KEYS.answers, id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUESTION_QUERY_KEYS.questions, id, 'analytics'],
       });
       toast.success('Answer created successfully!');
     },
