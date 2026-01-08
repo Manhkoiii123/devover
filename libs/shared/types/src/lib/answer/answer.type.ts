@@ -11,6 +11,8 @@ export interface Answer {
   authorId: string;
   createdAt: Date;
   updatedAt: Date;
+  upvotes: number;
+  downvotes: number;
   author: AnswerAuthor;
 }
 

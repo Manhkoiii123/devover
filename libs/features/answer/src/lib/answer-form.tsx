@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useRef, useState, useTransition } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@common/ui/components/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@common/ui/components/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,10 +15,6 @@ import { AnswerSchema } from '@common/validations/answer.validation';
 import dynamic from 'next/dynamic';
 import { MDXEditorMethods } from '@mdxeditor/editor';
 import { z } from 'zod';
-import TagCard from '@common/ui/components/tag-card';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { ROUTES } from '@common/constants/routes';
 import { useCreateAnswer } from '@common/api/endpoints/answer.api';
 
 const Editor = dynamic(() => import('@common/ui/components/editor'), {

@@ -19,6 +19,8 @@ import TagCard from '@common/ui/components/tag-card';
 import Votes from '@common/ui/components/votes';
 import { useAuth } from '@common/providers/auth-provider';
 import AnswerForm from '@features/answer/answer-form';
+import AllAnswers from '@features/answer/all-answers';
+
 const QuestionDetail = ({ id }: { id: string }) => {
   const { user } = useAuth();
   const { data: savedVotedQuestions } = useGetSavedVotedQuestions(
@@ -104,7 +106,9 @@ const QuestionDetail = ({ id }: { id: string }) => {
           <TagCard key={tag.id} id={tag.id as string} name={tag.name} isFixed />
         ))}
       </div>
-
+      <section className="my-5">
+        <AllAnswers questionId={question.id.toString()} />
+      </section>
       <section className="my-5">
         <AnswerForm questionId={question.id} />
       </section>
