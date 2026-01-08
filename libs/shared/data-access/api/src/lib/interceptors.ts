@@ -1,12 +1,20 @@
-import type {
-  AxiosInstance,
-  AxiosError,
-  InternalAxiosRequestConfig,
+import axios, {
+  type AxiosInstance,
+  type AxiosError,
+  type InternalAxiosRequestConfig,
 } from 'axios';
 import Cookies from 'js-cookie';
 import { ROUTES } from '@common/constants/routes';
 import { RefreshTokenData } from '@common/types/auth/auth.type';
-import { apiClient } from '@common/api/client';
+
+// Separate axios instance for refresh token calls (no interceptors to avoid circular dependency)
+const refreshClient = axios.create({
+  baseURL: process.env['NEXT_PUBLIC_API_URL'] || 'http://localhost:3300/api/v1',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 const isClient = typeof document !== 'undefined';
 
@@ -109,11 +117,19 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
         }
 
         if (!refreshTokenPromise) {
-          refreshTokenPromise = apiClient
-            .post<RefreshTokenData>('/auth/refresh', { refreshToken })
-            .then((res) => res.data)
+          refreshTokenPromise = refreshClient
+            .post<{ data: RefreshTokenData }>('/auth/refresh-token', {
+              refreshToken,
+            })
             .then((res) => {
-              const newAccessToken = res.accessToken;
+              // Handle raw response (not transformed by interceptors)
+              const responseData = res.data?.data || res.data;
+              const newAccessToken = (responseData as RefreshTokenData)
+                .accessToken;
+
+              if (!newAccessToken) {
+                throw new Error('No access token received from refresh');
+              }
 
               setCookie('accessToken', newAccessToken, {
                 expires: 7,
@@ -130,17 +146,22 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
             })
             .catch((refreshError) => {
               clearAuthAndRedirect();
-              return Promise.reject(refreshError);
+              throw refreshError;
             })
             .finally(() => {
               refreshTokenPromise = null;
             });
         }
 
-        return refreshTokenPromise.then((newAccessToken) => {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-          return instance(originalRequest);
-        });
+        return refreshTokenPromise
+          .then((newAccessToken) => {
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            return instance(originalRequest);
+          })
+          .catch(() => {
+            // If refresh failed, reject with original error
+            return Promise.reject(error);
+          });
       }
 
       return Promise.reject(error);

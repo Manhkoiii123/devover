@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "noPropertyAccessFromIndexSignature": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

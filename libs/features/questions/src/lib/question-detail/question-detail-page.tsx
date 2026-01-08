@@ -17,10 +17,17 @@ import {
 import { Tag } from '@common/types/question/question.type';
 import TagCard from '@common/ui/components/tag-card';
 import Votes from '@common/ui/components/votes';
+import { useAuth } from '@common/providers/auth-provider';
+import AnswerForm from '@features/answer/answer-form';
 const QuestionDetail = ({ id }: { id: string }) => {
-  const { data: savedVotedQuestions } = useGetSavedVotedQuestions(id);
+  const { user } = useAuth();
+  const { data: savedVotedQuestions } = useGetSavedVotedQuestions(
+    id,
+    user?.id.toString()
+  );
   const { data: analytics } = useGetQuestionAnalytics(id);
   const { data: question } = useGetQuestion(id);
+
   const { isSaved, isUpvoted, isDownvoted } = savedVotedQuestions || {};
   if (!question) return null;
   const { author, title, createdAt, content, tags } = question;
@@ -97,6 +104,10 @@ const QuestionDetail = ({ id }: { id: string }) => {
           <TagCard key={tag.id} id={tag.id as string} name={tag.name} isFixed />
         ))}
       </div>
+
+      <section className="my-5">
+        <AnswerForm questionId={question.id} />
+      </section>
     </>
   );
 };

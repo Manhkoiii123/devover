@@ -26,6 +26,7 @@
       "@features/auth/*": ["features/auth/src/lib/*"],
       "@features/questions/*": ["features/questions/src/lib/*"],
       "@features/home/*": ["features/home/src/lib/*"],
+      "@features/answer/*": ["features/answer/src/lib/*"],
       "@common/validations/*": ["shared/validations/src/lib/*"],
       "@common/assets/*": ["shared/assets/src/lib/*"]
     }

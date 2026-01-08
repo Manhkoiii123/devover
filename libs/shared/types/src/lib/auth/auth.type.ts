@@ -73,6 +73,7 @@ export interface RegisterData extends AuthUser {}
 
 export interface RefreshTokenData {
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface VerifyOTPData {

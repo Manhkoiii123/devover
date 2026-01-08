@@ -1,0 +1,19 @@
+{
+  "name": "answer",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/features/answer/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/features/answer",
+        "main": "libs/features/answer/src/index.ts",
+        "tsConfig": "libs/features/answer/tsconfig.lib.json",
+        "assets": []
+      }
+    }
+  }
+}

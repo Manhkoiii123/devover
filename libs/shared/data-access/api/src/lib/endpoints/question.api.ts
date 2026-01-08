@@ -45,11 +45,11 @@ export const QUESTION_QUERY_KEYS = {
   question: (id: string) => ['questions', id] as const,
 };
 
-export const useGetSavedVotedQuestions = (id: string) => {
+export const useGetSavedVotedQuestions = (id: string, userId?: string) => {
   return useQuery({
     queryKey: [QUESTION_QUERY_KEYS.questions, id, 'votedSavedQuestion'],
     queryFn: () => questionApi.getSavedVotedQuestions(id),
-    enabled: !!id,
+    enabled: !!id && !!userId,
   });
 };
 
