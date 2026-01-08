@@ -1,12 +1,12 @@
 'use client';
-import { toast } from 'sonner';
 import Image from 'next/image';
-import React, { use, useState } from 'react';
+import { useState } from 'react';
 import { formatNumber } from '@common/utils/number.utils';
 import Upvoted from '@common/assets/icons/upvoted.svg';
 import Downvoted from '@common/assets/icons/downvoted.svg';
 import Upvote from '@common/assets/icons/upvote.svg';
 import Downvote from '@common/assets/icons/downvote.svg';
+import { useVoteQuestionOrAnswer } from '@common/api/endpoints/vote.api';
 
 interface Params {
   targetType: 'question' | 'answer';
@@ -25,9 +25,14 @@ const Votes = ({
   isUpvoted,
   isDownvoted,
 }: Params) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: vote, isPending } = useVoteQuestionOrAnswer(
+    targetId,
+    targetType
+  );
 
-  const handleVote = async (voteType: 'upvote' | 'downvote') => {};
+  const handleVote = async (voteType: 'upvote' | 'downvote') => {
+    vote();
+  };
 
   return (
     <div className="flex-center gap-2.5">
@@ -37,9 +42,9 @@ const Votes = ({
           width={18}
           height={18}
           alt="upvote"
-          className={`cursor-pointer ${isLoading && 'opacity-50'}`}
+          className={`cursor-pointer ${isPending && 'opacity-50'}`}
           aria-label="Upvote"
-          onClick={() => !isLoading && handleVote('upvote')}
+          onClick={() => !isPending && handleVote('upvote')}
         />
 
         <div className="flex-center background-light700_dark400 min-w-5 rounded-sm p-1">
@@ -55,9 +60,9 @@ const Votes = ({
           width={18}
           height={18}
           alt="downvote"
-          className={`cursor-pointer ${isLoading && 'opacity-50'}`}
+          className={`cursor-pointer ${isPending && 'opacity-50'}`}
           aria-label="Downvote"
-          onClick={() => !isLoading && handleVote('downvote')}
+          onClick={() => !isPending && handleVote('downvote')}
         />
 
         <div className="flex-center background-light700_dark400 min-w-5 rounded-sm p-1">

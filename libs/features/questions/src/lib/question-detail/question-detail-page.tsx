@@ -53,8 +53,8 @@ const QuestionDetail = ({ id }: { id: string }) => {
           <div className="flex justify-end gap-4">
             <Votes
               targetType="question"
-              upvotes={question.upvotes}
-              downvotes={question.downvotes}
+              upvotes={analytics?.upvotes || 0}
+              downvotes={analytics?.downvotes || 0}
               targetId={question.id}
               isDownvoted={isDownvoted || false}
               isUpvoted={isUpvoted || false}
