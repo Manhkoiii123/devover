@@ -1,6 +1,8 @@
 import { apiClient } from '@common/api/client';
 import {
+  AnalyticsQuestionResponse,
   CreateQuestionBody,
+  HadSavedVotedQuestionResponse,
   QuestionListResponse,
   QuestionResponse,
 } from '@common/types/question/question.type';
@@ -15,7 +17,7 @@ export const questionApi = {
   },
   getQuestion: async (id: string) => {
     return apiClient
-      .get<QuestionResponse>(`/questions/${id}`)
+      .get<QuestionResponse>(`/questions/${id}/detail`)
       .then((res) => res.data);
   },
   getQuestions: async (
@@ -26,11 +28,29 @@ export const questionApi = {
       .get('/questions', { params: { query, filter } })
       .then((res) => res.data);
   },
+  getAnalytics: async (id: string): Promise<AnalyticsQuestionResponse> => {
+    return apiClient.get(`/questions/${id}/analytics`).then((res) => res.data);
+  },
+  getSavedVotedQuestions: async (
+    id: string
+  ): Promise<HadSavedVotedQuestionResponse> => {
+    return apiClient
+      .get(`/questions/${id}/votedSavedQuestion`)
+      .then((res) => res.data);
+  },
 };
 
 export const QUESTION_QUERY_KEYS = {
   questions: ['questions'] as const,
   question: (id: string) => ['questions', id] as const,
+};
+
+export const useGetSavedVotedQuestions = (id: string) => {
+  return useQuery({
+    queryKey: [QUESTION_QUERY_KEYS.questions, id, 'votedSavedQuestion'],
+    queryFn: () => questionApi.getSavedVotedQuestions(id),
+    enabled: !!id,
+  });
 };
 
 export const useCreateQuestion = () => {
@@ -47,6 +67,14 @@ export const useCreateQuestion = () => {
   });
 };
 
+export const useGetQuestionAnalytics = (id: string) => {
+  return useQuery({
+    queryKey: [QUESTION_QUERY_KEYS.questions, id, 'analytics'],
+    queryFn: () => questionApi.getAnalytics(id),
+    enabled: !!id,
+  });
+};
+
 export const useGetQuestion = (id: string) => {
   return useQuery({
     queryKey: QUESTION_QUERY_KEYS.question(id),
@@ -57,7 +85,7 @@ export const useGetQuestion = (id: string) => {
 
 export const useGetQuestions = (query?: string, filter?: string) => {
   return useQuery({
-    queryKey: QUESTION_QUERY_KEYS.questions,
+    queryKey: [QUESTION_QUERY_KEYS.questions, query, filter],
     queryFn: () => questionApi.getQuestions(query, filter),
   });
 };

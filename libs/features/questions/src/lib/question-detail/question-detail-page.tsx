@@ -9,14 +9,21 @@ import Preview from '@common/ui/components/editor/Preview';
 import Message from '@common/assets/icons/message.svg';
 import Eye from '@common/assets/icons/eye.svg';
 import Clock from '@common/assets/icons/clock.svg';
-import { useGetQuestion } from '@common/api/endpoints/question.api';
+import {
+  useGetQuestion,
+  useGetQuestionAnalytics,
+  useGetSavedVotedQuestions,
+} from '@common/api/endpoints/question.api';
 import { Tag } from '@common/types/question/question.type';
 import TagCard from '@common/ui/components/tag-card';
+import Votes from '@common/ui/components/votes';
 const QuestionDetail = ({ id }: { id: string }) => {
+  const { data: savedVotedQuestions } = useGetSavedVotedQuestions(id);
+  const { data: analytics } = useGetQuestionAnalytics(id);
   const { data: question } = useGetQuestion(id);
+  const { isSaved, isUpvoted, isDownvoted } = savedVotedQuestions || {};
   if (!question) return null;
-  const { author, title, createdAt, viewsCount, answers, content, tags } =
-    question;
+  const { author, title, createdAt, content, tags } = question;
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -33,6 +40,18 @@ const QuestionDetail = ({ id }: { id: string }) => {
                 {author.username}
               </p>
             </Link>
+          </div>
+          <div className="flex justify-end gap-4">
+            <Votes
+              targetType="question"
+              upvotes={question.upvotes}
+              downvotes={question.downvotes}
+              targetId={question.id}
+              isDownvoted={isDownvoted || false}
+              isUpvoted={isUpvoted || false}
+            />
+
+            {/* <SaveQuestion questionId={question._id} hasSaved={hasSaved} /> */}
           </div>
         </div>
 
@@ -53,7 +72,9 @@ const QuestionDetail = ({ id }: { id: string }) => {
         <Metric
           imgUrl={Message}
           alt="message icon"
-          value={formatNumber(answers ? answers.length : 0)}
+          value={formatNumber(
+            analytics?.answersCount ? analytics.answersCount : 0
+          )}
           title=""
           textStyles="small-regular text-dark400_light700"
         />
@@ -61,7 +82,7 @@ const QuestionDetail = ({ id }: { id: string }) => {
         <Metric
           imgUrl={Eye}
           alt="View icon"
-          value={formatNumber(viewsCount)}
+          value={formatNumber(analytics?.viewsCount ? analytics.viewsCount : 0)}
           title=""
           textStyles="small-regular text-dark400_light700"
         />

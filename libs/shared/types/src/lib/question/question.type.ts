@@ -68,3 +68,16 @@ export type QuestionListResponse = {
   data: QuestionResponse[];
   meta: PaginationMeta;
 };
+
+export type AnalyticsQuestionResponse = {
+  viewsCount: number;
+  upvotes: number;
+  downvotes: number;
+  answersCount: number;
+};
+
+export type HadSavedVotedQuestionResponse = {
+  isUpvoted: boolean;
+  isSaved: boolean;
+  isDownvoted: boolean;
+};
